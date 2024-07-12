@@ -2,8 +2,6 @@ const projectOpenButtons = document.querySelectorAll('.projectOpenButton');
 function triggerOpenProjectCommand(projectOpenButton) {
     const vscode = acquireVsCodeApi();
     const dataPath = projectOpenButton.currentTarget.dataset.path || null;
-    console.log(dataPath);
-
     if (!dataPath) {
         vscode.postMessage({
             command: 'invalidProject',
