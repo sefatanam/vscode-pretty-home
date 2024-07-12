@@ -23,3 +23,8 @@ export function getWorkspaceName(workspace: Workspace): string {
   }
   return workspace.folderUri.path.split("/").pop() || "Untitled";
 }
+
+export function openProject(path: string){
+  vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(path), true);
+}
+
