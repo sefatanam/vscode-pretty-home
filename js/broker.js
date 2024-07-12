@@ -1,5 +1,4 @@
 const projectOpenButtons = document.querySelectorAll('.projectOpenButton');
-console.log(projectOpenButtons)
 function triggerOpenProjectCommand(projectOpenButton) {
     const vscode = acquireVsCodeApi();
     const dataPath = projectOpenButton.currentTarget.dataset.path || null;
