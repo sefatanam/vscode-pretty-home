@@ -6,15 +6,15 @@ import { RecentProject } from "./types";
 export const getWebviewContent = (projects: RecentProject[], context: ExtensionContext, panel: WebviewPanel) => {
 	let htmlContent = generateWebView(makeProjectCards(projects));
 
-	const iconFilePath = vscode.Uri.joinPath(context.extensionUri, 'src/assets', 'icon.png');
+	const iconFilePath = vscode.Uri.joinPath(context.extensionUri, 'assets', 'icon.png');
 	const iconUri = panel.webview.asWebviewUri(iconFilePath);
 	htmlContent = htmlContent.replace('favicon.png', iconUri.toString());
 
-	const cssFilePath = vscode.Uri.joinPath(context.extensionUri, 'src/css', 'style.css');
+	const cssFilePath = vscode.Uri.joinPath(context.extensionUri, 'css', 'style.css');
 	const cssUri = panel.webview.asWebviewUri(cssFilePath);
 	htmlContent = htmlContent.replace('style.css', cssUri.toString());
 
-	const jsFilePath = vscode.Uri.joinPath(context.extensionUri, 'src/js', 'broker.js');
+	const jsFilePath = vscode.Uri.joinPath(context.extensionUri, 'js', 'broker.js');
 	const visUri = panel.webview.asWebviewUri(jsFilePath);
 	htmlContent = htmlContent.replace('broker.js', visUri.toString());
 	return htmlContent;
