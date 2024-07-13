@@ -1,9 +1,15 @@
-# Change Log
+## Changelog
 
-All notable changes to the "pretty-home" extension will be documented in this file.
+### Version 1.0.0 (2024-07-13)
+Pretty Home is a VS Code extension designed to enhance the appearance of your recent projects view, making it more organized and visually appealing.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+#### Features
 
-## [Unreleased]
+- Grid Layout: Displays recent projects in a clean grid layout.
+- Concise Information: Provides project titles and URLs for quick reference.
+- Styling: Adapts seamlessly to all VS Code themes.
+- Improved Readability: Enhances visual hierarchy and readability.
 
-- Initial release
+#### Known Issues
+
+- Currently, no known issues.
