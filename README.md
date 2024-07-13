@@ -5,10 +5,10 @@
 Pretty Home is a VS Code extension designed to enhance the appearance of your recent projects view, making it more organized and visually appealing.
 
 **Features:**
-- **Grid Layout:** Displays recent projects in a clean, grid layout.
-- **Concise Information:** Provides concise project titles and URLs for quick reference.
-- **Consistent Styling:** Ensures consistent button styling for easy navigation.
-- **Improved Readability:** Enhances visual hierarchy and readability.
+- Grid Layout: Displays recent projects in a clean grid layout.
+- Concise Information: Provides project titles and URLs for quick reference.
+- Styling: Adapts seamlessly to all VS Code themes.
+- Improved Readability: Enhances visual hierarchy and readability.
 
 **Installation:**
 1. Open VS Code.
