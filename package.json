@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.showWebview",
-        "title": "Show Webview"
+        "command": "extension.prettyHome",
+        "title": "Pretty Home"
       }
     ]
   },
