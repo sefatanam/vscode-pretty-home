@@ -1,8 +1,14 @@
 {
   "name": "pretty-home",
-  "displayName": "pretty-home",
-  "description": "",
-  "version": "0.0.1",
+  "displayName": "Pretty Home",
+  "description": "Pretty Home is a VS Code extension designed to enhance the appearance of your recent projects view, making it more organized and visually appealing",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Sefat Anam",
+    "email": "sefatanam@gmail.com",
+    "url": "https://github.com/sefatanam"
+  },
   "engines": {
     "vscode": "^1.91.0"
   },
@@ -31,7 +37,6 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/jsdom": "^21.1.7",
     "@types/mocha": "^10.0.7",
     "@types/node": "20.x",
     "@types/vscode": "^1.91.0",
@@ -45,7 +50,21 @@
     "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4"
   },
-  "dependencies": {
-    "jsdom": "^24.1.0"
+  "keywords": [
+    "vscode",
+    "pretty-home",
+    "sefatanam",
+    "extension",
+    "vs-code-extension",
+    "typescript",
+    "webview"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sefatanam/vscode-pretty-home"
+  },
+  "homepage": "https://github.com/sefatanam/vscode-pretty-home",
+  "bugs": {
+    "url": "https://github.com/sefatanam/vscode-pretty-home/issues"
   }
 }
