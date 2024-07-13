@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { RecentProject, RecentWorkspaces, Workspace } from "./types";
+ 
 
 export async function gerRecentProjects(): Promise<RecentProject[]> {
   const recentWorkspaces: RecentWorkspaces =
@@ -24,7 +25,11 @@ export function getWorkspaceName(workspace: Workspace): string {
   return workspace.folderUri.path.split("/").pop() || "Untitled";
 }
 
-export function openProject(path: string){
-  vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(path), true);
+export function openProject(path: string) {
+  try {
+    vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(path), true);
+  } catch (err: any) {
+    vscode.window.showInformationMessage(JSON.stringify(err));
+  }
 }
 

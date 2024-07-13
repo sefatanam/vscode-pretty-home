@@ -25,15 +25,45 @@ body {
 body > * {
   margin-block-start: var(--input-margin-vertical);
   margin-block-end: var(--input-margin-vertical);
+  display: grid;
 }
 *:focus {
   outline-color: var(--vscode-focusBorder) !important;
 }
-.title {
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 2rem 0;
-  font-size: calc(var(--vscode-editor-font-size) * 2);
   border-bottom: 1px solid;
   padding-block-end: 2rem;
+}
+
+@media (max-width: 600px){
+  .heading{
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(1, minmax(320px, 1fr));
+  }
+}
+
+.heading input[type="text"]{
+  width: 32rem;
+  padding: .7rem;
+  border-radius: 0.5rem;
+  outline: none;
+  border: none;
+  font-size: var(--vscode-font-size);
+  border: 1px solid var(--vscode-input-background);
+  background-color: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  font-weight: bold;
+}
+
+ 
+.title {
+  font-size: calc(var(--vscode-editor-font-size) * 2);
 }
 .grid {
   display: grid;

@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { showPrettyHomeCommand } from "./lib/command";
+import { showPrettyHomeCommand } from "./lib";
 
 
 // This method is called when your extension is activated

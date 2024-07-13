@@ -17,12 +17,16 @@ export const getWebviewContent = (projects: RecentProject[], context: ExtensionC
 	const jsFilePath = vscode.Uri.joinPath(context.extensionUri, 'src/js', 'broker.js');
 	const visUri = panel.webview.asWebviewUri(jsFilePath);
 	htmlContent = htmlContent.replace('broker.js', visUri.toString());
-
 	return htmlContent;
 };
 
 
-const makeProjectCards = (projects: RecentProject[]): string => {
+export const makeProjectCards = (projects: RecentProject[]): string => {
+
+	if (projects.length <= 0) {
+		return `<p>No Project found</p>`;
+	}
+
 	const cardsHTML = projects.map(project => `
     <div class="card">
     	<div class="content">
@@ -54,8 +58,13 @@ const generateWebView = (cards: string) => {
 		<link rel="icon" type="image/png" href="favicon.png" />
 	</head>
 	<body>
-		<h1 class="title">Recent Projects</h1>
-		<div class="grid">${cards}</div>
+		
+		<div class="heading">
+			<h1 class="title">Recent Projects</h1>
+			<input type="text" placeholder="Search Project" id="seachInput" value=""/>
+		</div>
+
+		<div class="grid" id='cardsContainer'> ${cards}</div>
 		<script type="text/javascript" src="broker.js"></script>
 	</body>
 	</html>
