@@ -4,6 +4,7 @@
   "description": "Pretty Home is a VS Code extension designed to enhance the appearance of your recent projects view, making it more organized and visually appealing",
   "version": "1.0.0",
   "license": "MIT",
+  "icon": "src/assets/icon.png",
   "publisher": "sefatanam",
   "author": {
     "name": "Sefat Anam",
