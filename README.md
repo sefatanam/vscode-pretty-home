@@ -1,71 +1,36 @@
-# pretty-home README
+### Pretty Home - VS Code Extension
 
-This is the README for your extension "pretty-home". After writing up a brief description, we recommend including the following sections.
+![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## Features
+Pretty Home is a VS Code extension designed to enhance the appearance of your recent projects view, making it more organized and visually appealing.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+**Features:**
+- **Grid Layout:** Displays recent projects in a clean, grid layout.
+- **Concise Information:** Provides concise project titles and URLs for quick reference.
+- **Consistent Styling:** Ensures consistent button styling for easy navigation.
+- **Improved Readability:** Enhances visual hierarchy and readability.
 
-For example if there is an image subfolder under your extension project workspace:
+**Installation:**
+1. Open VS Code.
+2. Go to the Extensions view by clicking the Extensions icon in the Activity Bar.
+3. Search for "Pretty Home".
+4. Click Install.
 
-\!\[feature X\]\(images/feature-x.png\)
+**Usage:**
+After installing the extension, navigate to the command palette in VS Code and search for Pretty Home. Selecting this option will transform the display of your recent projects into a meticulously organized and visually appealing format. Each project is elegantly presented as a card, showcasing essential details such as its title, URL, and an intuitive 'Open' button for seamless access.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+**Release Notes:**
+- **1.0.0**: Initial release with core features.
 
-## Requirements
+**Contributing:**
+Contributions are welcome. Feel free to submit issues or pull requests on [GitHub](https://github.com/sefatanam/vscode-pretty-home).
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+**License:**
+This project is licensed under the MIT License.
 
-## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+**Screenshots:**
+![Pretty Home Screenshot](https://raw.githubusercontent.com/sefatanam/vscode-pretty-home/master/screenshots/PrettyHome.png)
 
-For example:
 
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**Enjoy a prettier, more organized view of your recent projects in VS Code!**
