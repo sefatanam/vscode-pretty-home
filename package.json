@@ -2,7 +2,7 @@
   "name": "pretty-home",
   "displayName": "Pretty Home",
   "description": "Pretty Home is a VS Code extension designed to enhance the appearance of your recent projects view, making it more organized and visually appealing",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "license": "MIT",
   "icon": "icon.png",
   "publisher": "sefatanam",
@@ -17,15 +17,37 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": ["onStartupFinished"],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "extension.prettyHome",
-        "title": "Pretty Home ✨"
+        "title": "Recent Projects ✨",
+        "category": "Pretty Home"
+      },
+      {
+        "command": "extension.prettyHomeSettings",
+        "title": "Settings",
+        "category": "Pretty Home"
+      },
+      {
+        "command": "extension.prettyHomeGiveStar",
+        "title": "Give star 🌟 in Github to support",
+        "category": "Pretty Home"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Pretty Home Settings",
+      "properties": {
+        "prettyHome.showOnStartup": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show Pretty Home on startup when no folder or workspace is loaded."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",

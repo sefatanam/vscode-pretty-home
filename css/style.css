@@ -49,15 +49,15 @@ body > * {
 }
 
 .heading input[type="text"]{
-  width: 32rem;
+  width: clamp(20%,32rem,100%) ;
   padding: .7rem;
-  border-radius: 0.5rem;
-  outline: none;
-  border: none;
+  border-radius: 6px;
+  outline: 1px solid var(--vscode-commandCenter-border);
+  border: 1px solid var(--vscode-commandCenter-border);
   font-size: var(--vscode-font-size);
   border: 1px solid var(--vscode-input-background);
-  background-color: var(--vscode-input-background);
-  color: var(--vscode-input-foreground);
+  background-color: var(--vscode-commandCenter-background);
+  color: var(--vscode-commandCenter-foreground);
   font-weight: bold;
 }
 
@@ -92,11 +92,14 @@ body > * {
   font-size: calc(var(--vscode-editor-font-size) / 2);
   user-select: text;
 }
+
+.title .icon,
 .card .icon {
   --size: 1.2rem;
   height: var(--size);
   width: var(--size);
   color: var(--vscode-input-foreground);
+  cursor: pointer;
 }
 .card:hover {
   background: var(--vscode-textLink-background);
