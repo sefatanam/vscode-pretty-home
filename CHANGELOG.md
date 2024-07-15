@@ -13,3 +13,14 @@ Pretty Home is a VS Code extension designed to enhance the appearance of your re
 #### Known Issues
 
 - Currently, no known issues.
+
+
+### Version 1.1.0 (2024-07-16)
+
+#### Features
+- Pretty Home now configurable to show default in homepage accessible from command pallete
+- New command pallete option for put star in github
+
+#### Fix
+- Loading icon in tab bar
+- Fix typo in no project found
