@@ -24,7 +24,7 @@ export const getWebviewContent = (projects: RecentProject[], context: ExtensionC
 export const makeProjectCards = (projects: RecentProject[]): string => {
 
 	if (projects.length <= 0) {
-		return `<p>No Project found</p>`;
+		return `<p>No Project found.</p>`;
 	}
 
 	const cardsHTML = projects.map(project => `
