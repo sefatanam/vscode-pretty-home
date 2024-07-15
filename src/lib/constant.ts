@@ -1,6 +1,7 @@
 export const APP = {
     WEB_VIEW_TYPE: 'pretty-home',
-    TITLE: 'Recent Projects | Pretty-Home'
+    TITLE: 'Recent Projects | Pretty-Home',
+    WEB_VIEW_REF:'webViewRef'
 };
 
 export const COMMAND = {

@@ -33,3 +33,22 @@ export function openProject(path: string) {
   }
 }
 
+/**
+ * Show the settings dialog with a checkbox
+ * @param {vscode.ExtensionContext} context
+ */
+export async function showSettingsDialog(context: vscode.ExtensionContext) {
+  const config = vscode.workspace.getConfiguration('prettyHome');
+  const selectedOption = await vscode.window.showQuickPick(
+    ['Yes', 'No'],
+    {
+      placeHolder: 'Do you want to load Pretty Home by default on startup?',
+      ignoreFocusOut: true,
+    }
+  );
+
+  if (selectedOption === 'Yes' || selectedOption === 'No') {
+    const newValue = selectedOption === 'Yes';
+    await config.update('showOnStartup', newValue, vscode.ConfigurationTarget.Global);
+  }
+}
