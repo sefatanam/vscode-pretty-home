@@ -9,6 +9,8 @@ Pretty Home is a VS Code extension designed to enhance the appearance of your re
 - Concise Information: Provides project titles and URLs for quick reference.
 - Styling: Adapts seamlessly to all VS Code themes.
 - Improved Readability: Enhances visual hierarchy and readability.
+- Configurable to show default in homepage accessible from command pallete
+- Open core project from command pallete
 
 **Installation:**
 1. Open VS Code.
