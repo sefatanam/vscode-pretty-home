@@ -1,21 +1,16 @@
 import * as vscode from "vscode";
 import { RecentProject, RecentWorkspaces, Workspace } from "./types";
- 
+
 
 export async function gerRecentProjects(): Promise<RecentProject[]> {
-  const recentWorkspaces: RecentWorkspaces =
-    await vscode.commands.executeCommand("_workbench.getRecentlyOpened");
-  if (recentWorkspaces) {
-    const recentFolders = recentWorkspaces.workspaces || [];
-    return recentFolders.map(
-      (workspace): RecentProject => ({
-        name: getWorkspaceName(workspace),
-        path: workspace.folderUri.path,
-      })
-    );
-  }
+  const recentWorkspaces: RecentWorkspaces = await vscode.commands.executeCommand("_workbench.getRecentlyOpened");
+  if (!recentWorkspaces) return []
 
-  return [];
+  const recentFolders = recentWorkspaces.workspaces || [];
+  return recentFolders.map(
+    (workspace): RecentProject => ({ name: getWorkspaceName(workspace), path: workspace.folderUri.path })
+  );
+
 }
 
 export function getWorkspaceName(workspace: Workspace): string {
@@ -33,10 +28,6 @@ export function openProject(path: string) {
   }
 }
 
-/**
- * Show the settings dialog with a checkbox
- * @param {vscode.ExtensionContext} context
- */
 export async function showSettingsDialog(context: vscode.ExtensionContext) {
   const config = vscode.workspace.getConfiguration('prettyHome');
   const selectedOption = await vscode.window.showQuickPick(

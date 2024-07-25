@@ -23,7 +23,8 @@ After installing the extension, navigate to the command palette in VS Code and s
 
 **Release Notes:**
 - **1.0.0**: Initial release with core features.
-- **1.1.0**: Configurable to show default in homepage accessible from command pallete
+- **1.1.0**: Configurable to show default in homepage accessible from command pallete.
+- **1.1.1**: Improve user experince, bug fixes and code refactored.
 
 **Contributing:**
 Contributions are welcome. Feel free to submit issues or pull requests on [GitHub](https://github.com/sefatanam/vscode-pretty-home).

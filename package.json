@@ -2,7 +2,7 @@
   "name": "pretty-home",
   "displayName": "Pretty Home",
   "description": "Pretty Home is a VS Code extension designed to enhance the appearance of your recent projects view, making it more organized and visually appealing",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "icon": "icon.png",
   "publisher": "sefatanam",
@@ -58,7 +58,8 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
     "lint": "eslint src --ext ts",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "production":"vsce package"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.7",

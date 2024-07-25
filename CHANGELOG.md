@@ -24,3 +24,12 @@ Pretty Home is a VS Code extension designed to enhance the appearance of your re
 #### Fix
 - Loading icon in tab bar
 - Fix typo in no project found
+
+#### Known Issues
+
+- Multiple Pretty Home instance keep opening on focus out from tab and back again.
+
+### Version 1.1.1 (2024-07-26)
+
+#### Fix
+- Multiple Pretty Home instance keep opening on focus out from tab and back again.
