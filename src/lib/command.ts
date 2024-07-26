@@ -11,8 +11,11 @@ export async function showPrettyHomeCommand(context: vscode.ExtensionContext) {
         "extension.prettyHome",
         async () => {
             const isPanelInstanceOpen = context.globalState.get(APP.PRETTY_HOME_PANEL_OPEN, false);
-            if (isPanelInstanceOpen) return;
-            
+            if (isPanelInstanceOpen) {
+                vscode.window.showInformationMessage('Pretty Home already initialized ✨');
+                return
+            };
+
             const panelIconPath = {
                 light: vscode.Uri.file(path.join(context.extensionPath, 'assets', 'icon.png')),
                 dark: vscode.Uri.file(path.join(context.extensionPath, 'assets', 'icon.png'))
@@ -52,9 +55,8 @@ export async function showPrettyHomeCommand(context: vscode.ExtensionContext) {
                 context.subscriptions
             );
             webviewPanel.webview.html = getWebviewContent(projects, context, webviewPanel);
-            vscode.window.showInformationMessage('Pretty Home Initialized ✨');
             context.globalState.update(APP.PRETTY_HOME_PANEL_OPEN, true);
-            
+
             webviewPanel.onDidDispose(() => {
                 context.globalState.update(APP.PRETTY_HOME_PANEL_OPEN, false);
             })

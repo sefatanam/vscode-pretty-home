@@ -10,6 +10,8 @@ Pretty Home is a VS Code extension designed to enhance the appearance of your re
 - Styling: Adapts seamlessly to all VS Code themes.
 - Improved Readability: Enhances visual hierarchy and readability.
 
+> **Recommended** to set `"workbench.startupEditor": "none"` in `settings.json` globally which mean disable the default vscode welcome page. **But if you don't want to then it's fine**.
+
 #### Known Issues
 
 - Currently, no known issues.
@@ -33,3 +35,16 @@ Pretty Home is a VS Code extension designed to enhance the appearance of your re
 
 #### Fix
 - Multiple Pretty Home instance keep opening on focus out from tab and back again.
+
+#### Known Issues
+
+- Load on startup by default
+
+### Version 1.1.2 (2024-07-26)
+
+#### Fix
+- Load on startup by default
+> Recommended to set `"workbench.startupEditor": "none"` in `settings.json` globally which mean disable the default vscode welcome page.
+
+- Remove redundant `Pretty Home Initialized ✨` notification
+

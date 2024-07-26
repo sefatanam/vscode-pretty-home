@@ -25,6 +25,10 @@ export async function activate(context: vscode.ExtensionContext) {
 			vscode.window.showErrorMessage("Something went wront to load by default.");
 		}
 	});
+
+	(function init() {
+		vscode.commands.executeCommand('extension.prettyHome');
+	})()
 }
 
 // This method is called when your extension is deactivated
