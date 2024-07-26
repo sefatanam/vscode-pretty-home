@@ -16,7 +16,7 @@
   },
   "categories": [
     "Visualization",
-    "Other",
+    "Other"
   ],
   "activationEvents": ["onStartupFinished"],
   "main": "./dist/extension.js",
