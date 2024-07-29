@@ -1,0 +1,56 @@
+name: Publish Extension
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '22'
+
+    - name: Install pnpm
+      run: npm install -g pnpm
+
+    - name: Extract version from tag
+      id: extract_version
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+    - name: Update package.json version
+      run: |
+        version=$(echo $RELEASE_VERSION)
+        jq --arg version "$version" '.version = $version' package.json > package.tmp.json
+        mv package.tmp.json package.json
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Package extension
+      run: pnpm run production
+
+    - name: Rename VSIX file
+      run: |
+        version=$(echo $RELEASE_VERSION)
+        mv *.vsix "pretty-home-$version.vsix"
+
+    - name: Save VSIX artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Pretty Home extension found with verison
+        path: 'pretty-home-*.vsix'
+
+    - name: Publish extension
+      env:
+        VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      run: |
+        vsix_file=$(ls pretty-home-*.vsix)
+        npx vsce publish -p $VSCE_PAT $vsix_file
