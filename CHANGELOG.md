@@ -57,4 +57,12 @@ Pretty Home is a VS Code extension designed to enhance the appearance of your re
 
 #### Fix
 
-- [Pretty home instance open multiple instances on profile switch](https://github.com/sefatanam/vscode-pretty-home/issues/3)
+- [Fix Pretty home instance open multiple instances on profile switch](https://github.com/sefatanam/vscode-pretty-home/issues/3)
+
+#### Known Issue
+
+- State issue to memorize opening tab instance
+
+### Version 1.1.4 (2024-07-30)
+
+- Fix state issue to memorize opening tab instance

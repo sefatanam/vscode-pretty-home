@@ -43,3 +43,18 @@ export async function showSettingsDialog(context: vscode.ExtensionContext) {
     await config.update('showOnStartup', newValue, vscode.ConfigurationTarget.Global);
   }
 }
+
+export function isTabInstanceOpen(): boolean {
+  const isInstanceOpen = vscode.window.tabGroups.all
+    .flatMap(group => group.tabs)
+    .find(tab => tab.label.trim().includes('Pretty-Home'))
+  if (isInstanceOpen) return true;
+  return false;
+}
+
+export function shouldStartInStartup(e: vscode.WindowState): boolean {
+  const config = vscode.workspace.getConfiguration('prettyHome');
+  const showOnStartup = config.get('showOnStartup', false);
+  const shouldOpen = e.active && !vscode.workspace.workspaceFolders && showOnStartup;
+  return shouldOpen;
+}
