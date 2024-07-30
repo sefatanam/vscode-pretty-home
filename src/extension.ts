@@ -27,7 +27,14 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	(function init() {
-		vscode.commands.executeCommand('extension.prettyHome');
+		const isInstanceOpen = vscode.window.tabGroups.all
+			.flatMap(group => group.tabs)
+			.find(tab => tab.label.trim().includes('Pretty-Home'))
+			
+		if (!isInstanceOpen) {
+			vscode.commands.executeCommand('extension.prettyHome');
+		}
+
 	})()
 }
 
