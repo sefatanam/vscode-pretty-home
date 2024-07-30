@@ -1,7 +1,6 @@
 export const APP = {
     WEB_VIEW_TYPE: 'pretty-home',
     TITLE: 'Recent Projects | Pretty-Home',
-    PRETTY_HOME_PANEL_OPEN: 'prettyHomePanelOpen'
 } as const;
 
 export const COMMAND = {
