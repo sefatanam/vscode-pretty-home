@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { isTabInstanceOpen, openProjectInGithub, shouldStartInStartup, showPrettyHomeCommand, showPrettyHomeSettingsCommand } from "./lib";
+import { openProjectInGithub, shouldOpenInstance, showPrettyHomeCommand, showPrettyHomeSettingsCommand } from "./lib";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -12,8 +12,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// Open the webview by default when VS Code starts and no folder/workspace is loaded
 	vscode.window.onDidChangeWindowState((e: vscode.WindowState) => {
 		try {
-			if (isTabInstanceOpen()) return;
-			if (!shouldStartInStartup(e)) return;
+			if (shouldOpenInstance() && e.focused) return;
 			vscode.commands.executeCommand('extension.prettyHome');
 
 		} catch (err: any) {
@@ -22,7 +21,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 	(function init() {
-		if (isTabInstanceOpen()) return;
+		if (shouldOpenInstance()) return;
 		vscode.commands.executeCommand('extension.prettyHome');
 	})()
 }

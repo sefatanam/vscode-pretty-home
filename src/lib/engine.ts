@@ -48,13 +48,17 @@ export function isTabInstanceOpen(): boolean {
   const isInstanceOpen = vscode.window.tabGroups.all
     .flatMap(group => group.tabs)
     .find(tab => tab.label.trim().includes('Pretty-Home'))
-  if (isInstanceOpen) return true;
-  return false;
+  if (!isInstanceOpen) return false;
+  return true;
 }
 
-export function shouldStartInStartup(e: vscode.WindowState): boolean {
+export function shouldStartInStartup(): boolean {
   const config = vscode.workspace.getConfiguration('prettyHome');
   const showOnStartup = config.get('showOnStartup', false);
-  const shouldOpen = e.active && !vscode.workspace.workspaceFolders && showOnStartup;
+  const shouldOpen = !vscode.workspace.workspaceFolders && showOnStartup;
   return shouldOpen;
+}
+
+export function shouldOpenInstance() {
+  return isTabInstanceOpen() && shouldStartInStartup();
 }
