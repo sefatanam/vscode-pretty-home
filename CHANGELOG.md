@@ -67,6 +67,6 @@ Pretty Home is a VS Code extension designed to enhance the appearance of your re
 
 - Fix state issue to memorize opening tab instance
 
-### Version 1.1.5 (2024-07-31)
+### Version 1.1.50 (2024-07-31)
 
 - Update open instance logic, added logger in output channel and performance improvment.
