@@ -1,20 +1,19 @@
-import * as vscode from 'vscode';
-import { ExtensionContext, WebviewPanel } from "vscode";
+import { ExtensionContext, Uri, WebviewPanel } from 'vscode';
 import { WEB_VIEW_ID } from "./constant";
 import { RecentProject } from "./types";
 
 export const getWebviewContent = (projects: RecentProject[], context: ExtensionContext, panel: WebviewPanel) => {
 	let htmlContent = generateWebView(makeProjectCards(projects));
 
-	const iconFilePath = vscode.Uri.joinPath(context.extensionUri, 'assets', 'icon.png');
+	const iconFilePath = Uri.joinPath(context.extensionUri, 'assets', 'icon.png');
 	const iconUri = panel.webview.asWebviewUri(iconFilePath);
 	htmlContent = htmlContent.replace('favicon.png', iconUri.toString());
 
-	const cssFilePath = vscode.Uri.joinPath(context.extensionUri, 'css', 'style.css');
+	const cssFilePath = Uri.joinPath(context.extensionUri, 'css', 'style.css');
 	const cssUri = panel.webview.asWebviewUri(cssFilePath);
 	htmlContent = htmlContent.replace('style.css', cssUri.toString());
 
-	const jsFilePath = vscode.Uri.joinPath(context.extensionUri, 'js', 'broker.js');
+	const jsFilePath = Uri.joinPath(context.extensionUri, 'js', 'broker.js');
 	const visUri = panel.webview.asWebviewUri(jsFilePath);
 	htmlContent = htmlContent.replace('broker.js', visUri.toString());
 	return htmlContent;

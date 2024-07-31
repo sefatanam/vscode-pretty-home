@@ -28,7 +28,7 @@ After installing the extension, navigate to the command palette in VS Code and s
 - **1.1.2**: Fix Load on startup by default.
 - **1.1.3**: Fix Pretty home instance open multiple instances on profile switch.
 - **1.1.4**: Fix State issue to memorize opening tab instance.
-- **1.1.5**: Update open instance logic.
+- **1.1.5**: Update open instance logic, added logger in output channel and performance improvment.
 
 **Contributing:**
 Contributions are welcome. Feel free to submit issues or pull requests on [GitHub](https://github.com/sefatanam/vscode-pretty-home).

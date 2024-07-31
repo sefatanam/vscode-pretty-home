@@ -1,4 +1,4 @@
-const projectOpenButtons = document.querySelectorAll(".projectOpenButton");
+ 
 const searchInput = document.querySelector("#seachInput");
 const vscode = acquireVsCodeApi();
 
@@ -42,9 +42,14 @@ const debouncedTriggerSearchProjectCommand = debounce(
   300
 );
 
-Array.from(projectOpenButtons).forEach((projectOpenButton) =>
-  projectOpenButton?.addEventListener("click", triggerOpenProjectCommand)
-);
+function attachEventListeners() {
+  const projectOpenButtonsSelector = ".projectOpenButton";
+  const projectOpenButtons = document.querySelectorAll(projectOpenButtonsSelector);
+  Array.from(projectOpenButtons).forEach((projectOpenButton) =>
+    projectOpenButton?.addEventListener("click", triggerOpenProjectCommand)
+  );
+}
+
 searchInput.addEventListener("input", () =>
   debouncedTriggerSearchProjectCommand(searchInput)
 );
@@ -54,6 +59,10 @@ window.addEventListener("message", (event) => {
   switch (message.command) {
     case "renderCards":
       document.querySelector("#cardsContainer").innerHTML = message.html;
+      attachEventListeners()
       break;
   }
 });
+
+
+window.addEventListener('DOMContentLoaded', () => attachEventListeners())

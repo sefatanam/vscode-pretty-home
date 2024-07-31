@@ -1,9 +1,10 @@
-import * as vscode from "vscode";
+import { commands, ConfigurationTarget, ExtensionContext, Uri, window, workspace } from "vscode";
+import { Logger } from "./logger";
 import { RecentProject, RecentWorkspaces, Workspace } from "./types";
 
 
 export async function gerRecentProjects(): Promise<RecentProject[]> {
-  const recentWorkspaces: RecentWorkspaces = await vscode.commands.executeCommand("_workbench.getRecentlyOpened");
+  const recentWorkspaces: RecentWorkspaces = await commands.executeCommand("_workbench.getRecentlyOpened");
   if (!recentWorkspaces) return []
 
   const recentFolders = recentWorkspaces.workspaces || [];
@@ -13,24 +14,38 @@ export async function gerRecentProjects(): Promise<RecentProject[]> {
 
 }
 
+export function filterProjects(projects: RecentProject[], name: string) {
+  if (!name) { return projects; }
+
+  name = name.toLowerCase().trim();
+  return projects.filter(project => project.name.toLowerCase().trim().includes(name));
+}
+
 export function getWorkspaceName(workspace: Workspace): string {
   if ("configPath" in workspace) {
-    return vscode.workspace.name || "Workspace";
+    return workspace.configPath?.path || "Workspace";
   }
   return workspace.folderUri.path.split("/").pop() || "Untitled";
 }
 
 export function openProject(path: string) {
   try {
-    vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(path), true);
+    commands.executeCommand('vscode.openFolder', Uri.file(path)).then(() => {
+      Logger.GetInstance().log(`Successfully opened project at path: ${JSON.stringify(path)}`);
+    },
+      (err) => {
+        Logger.GetInstance().log(`Failed to open project at path: ${JSON.stringify(path)}, error: ${err.message}`);
+        window.showInformationMessage(`Failed to open project: ${err.message}`);
+      });
   } catch (err: any) {
-    vscode.window.showInformationMessage(JSON.stringify(err));
+    Logger.GetInstance().log(`Exception opening project at path: ${JSON.stringify(path)}, error: ${err.message}`);
+    window.showInformationMessage(`Exception opening project: ${JSON.stringify(err)}`);
   }
 }
 
-export async function showSettingsDialog(context: vscode.ExtensionContext) {
-  const config = vscode.workspace.getConfiguration('prettyHome');
-  const selectedOption = await vscode.window.showQuickPick(
+export async function showSettingsDialog(context: ExtensionContext) {
+  const config = workspace.getConfiguration('prettyHome');
+  const selectedOption = await window.showQuickPick(
     ['Yes', 'No'],
     {
       placeHolder: 'Do you want to load Pretty Home by default on startup?',
@@ -40,12 +55,12 @@ export async function showSettingsDialog(context: vscode.ExtensionContext) {
 
   if (selectedOption === 'Yes' || selectedOption === 'No') {
     const newValue = selectedOption === 'Yes';
-    await config.update('showOnStartup', newValue, vscode.ConfigurationTarget.Global);
+    await config.update('showOnStartup', newValue, ConfigurationTarget.Global);
   }
 }
 
 export function isTabInstanceOpen(): boolean {
-  const isInstanceOpen = vscode.window.tabGroups.all
+  const isInstanceOpen = window.tabGroups.all
     .flatMap(group => group.tabs)
     .find(tab => tab.label.trim().includes('Pretty-Home'))
   if (!isInstanceOpen) return false;
@@ -53,10 +68,9 @@ export function isTabInstanceOpen(): boolean {
 }
 
 export function shouldStartInStartup(): boolean {
-  const config = vscode.workspace.getConfiguration('prettyHome');
+  const config = workspace.getConfiguration('prettyHome');
   const showOnStartup = config.get('showOnStartup', false);
-  const shouldOpen = !vscode.workspace.workspaceFolders && showOnStartup;
-  return shouldOpen;
+  return showOnStartup;
 }
 
 export function shouldOpenInstance() {

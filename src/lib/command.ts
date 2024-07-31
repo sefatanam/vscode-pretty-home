@@ -1,29 +1,28 @@
 import path from 'path';
-import * as vscode from 'vscode';
+import { commands, env, ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { APP, COMMAND, REPO_URL } from "./constant";
-import { gerRecentProjects, isTabInstanceOpen, openProject, showSettingsDialog } from "./engine";
-import { RecentProject } from "./types";
+import { filterProjects, gerRecentProjects, isTabInstanceOpen, openProject, showSettingsDialog } from "./engine";
 import { getWebviewContent, makeProjectCards } from "./views";
 
 
-export async function showPrettyHomeCommand(context: vscode.ExtensionContext) {
-    const disposable = vscode.commands.registerCommand(
+export async function showPrettyHomeCommand(context: ExtensionContext) {
+    const disposable = commands.registerCommand(
         "extension.prettyHome",
         async () => {
             if (isTabInstanceOpen()) {
-                vscode.window.showInformationMessage('Pretty Home already initialized ✨');
+                window.showInformationMessage('Pretty Home already initialized ✨');
                 return
             };
 
             const panelIconPath = {
-                light: vscode.Uri.file(path.join(context.extensionPath, 'assets', 'icon.png')),
-                dark: vscode.Uri.file(path.join(context.extensionPath, 'assets', 'icon.png'))
+                light: Uri.file(path.join(context.extensionPath, 'assets', 'icon.png')),
+                dark: Uri.file(path.join(context.extensionPath, 'assets', 'icon.png'))
             };
 
-            const webviewPanel = vscode.window.createWebviewPanel(
+            const webviewPanel = window.createWebviewPanel(
                 APP.WEB_VIEW_TYPE,
                 APP.TITLE,
-                vscode.ViewColumn.One,
+                ViewColumn.One,
                 {
                     enableScripts: true,
                     retainContextWhenHidden: true,
@@ -36,7 +35,7 @@ export async function showPrettyHomeCommand(context: vscode.ExtensionContext) {
                     try {
                         switch (message.command) {
                             case COMMAND.INVALID_PROJECT:
-                                vscode.window.showInformationMessage('Path is not valid !');
+                                window.showInformationMessage('Path is not valid !');
                                 break;
                             case COMMAND.OPEN_PROJECT:
                                 openProject(message.path);
@@ -47,7 +46,7 @@ export async function showPrettyHomeCommand(context: vscode.ExtensionContext) {
                                 webviewPanel.webview.postMessage({ command: COMMAND.RENDER_CARDS, html: productCards });
                         }
                     } catch (err: any) {
-                        vscode.window.showInformationMessage(JSON.stringify(err));
+                        window.showInformationMessage(JSON.stringify(err));
                     }
                 },
                 undefined,
@@ -60,8 +59,8 @@ export async function showPrettyHomeCommand(context: vscode.ExtensionContext) {
 }
 
 
-export async function showPrettyHomeSettingsCommand(context: vscode.ExtensionContext) {
-    const defaultSettingDisposable = vscode.commands.registerCommand(
+export async function showPrettyHomeSettingsCommand(context: ExtensionContext) {
+    const defaultSettingDisposable = commands.registerCommand(
         "extension.prettyHomeSettings",
         async () => {
             await showSettingsDialog(context);
@@ -69,18 +68,11 @@ export async function showPrettyHomeSettingsCommand(context: vscode.ExtensionCon
     context.subscriptions.push(defaultSettingDisposable);
 }
 
-export async function openProjectInGithub(context: vscode.ExtensionContext) {
-    const disposable = vscode.commands.registerCommand(
+export async function openProjectInGithub(context: ExtensionContext) {
+    const disposable = commands.registerCommand(
         "extension.prettyHomeGiveStar",
         async () => {
-            vscode.env.openExternal(vscode.Uri.parse(REPO_URL));
+            env.openExternal(Uri.parse(REPO_URL));
         });
     context.subscriptions.push(disposable);
-}
-
-function filterProjects(projects: RecentProject[], name: string) {
-    if (!name) { return projects; }
-
-    name = name.toLowerCase().trim();
-    return projects.filter(project => project.name.toLowerCase().trim().includes(name));
 }
