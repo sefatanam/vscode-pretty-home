@@ -1,7 +1,8 @@
-import path from 'path';
+import { join } from 'path';
 import { commands, env, ExtensionContext, Uri, ViewColumn, window } from 'vscode';
 import { APP, COMMAND, REPO_URL } from "./constant";
 import { filterProjects, gerRecentProjects, isTabInstanceOpen, openProject, showSettingsDialog } from "./engine";
+import { Logger } from "./logger";
 import { getWebviewContent, makeProjectCards } from "./views";
 
 
@@ -9,50 +10,54 @@ export async function showPrettyHomeCommand(context: ExtensionContext) {
     const disposable = commands.registerCommand(
         "extension.prettyHome",
         async () => {
-            if (isTabInstanceOpen()) {
-                window.showInformationMessage('Pretty Home already initialized ✨');
-                return
-            };
+            try {
+                if (isTabInstanceOpen()) {
+                    return;
+                };
 
-            const panelIconPath = {
-                light: Uri.file(path.join(context.extensionPath, 'assets', 'icon.png')),
-                dark: Uri.file(path.join(context.extensionPath, 'assets', 'icon.png'))
-            };
+                const panelIconPath = {
+                    light: Uri.file(join(context.extensionPath, 'assets', 'icon.png')),
+                    dark: Uri.file(join(context.extensionPath, 'assets', 'icon.png'))
+                };
 
-            const webviewPanel = window.createWebviewPanel(
-                APP.WEB_VIEW_TYPE,
-                APP.TITLE,
-                ViewColumn.One,
-                {
-                    enableScripts: true,
-                    retainContextWhenHidden: true,
-                }
-            );
-            const projects = await gerRecentProjects();
-            webviewPanel.iconPath = panelIconPath;
-            webviewPanel.webview.onDidReceiveMessage(
-                message => {
-                    try {
-                        switch (message.command) {
-                            case COMMAND.INVALID_PROJECT:
-                                window.showInformationMessage('Path is not valid !');
-                                break;
-                            case COMMAND.OPEN_PROJECT:
-                                openProject(message.path);
-                                break;
-                            case COMMAND.SEARCH_PROJECT:
-                                const filteredProjects = filterProjects([...projects], message.value);
-                                const productCards = makeProjectCards(filteredProjects);
-                                webviewPanel.webview.postMessage({ command: COMMAND.RENDER_CARDS, html: productCards });
-                        }
-                    } catch (err: any) {
-                        window.showInformationMessage(JSON.stringify(err));
+                const webviewPanel = window.createWebviewPanel(
+                    APP.WEB_VIEW_TYPE,
+                    APP.TITLE,
+                    ViewColumn.One,
+                    {
+                        enableScripts: true,
+                        retainContextWhenHidden: true,
                     }
-                },
-                undefined,
-                context.subscriptions
-            );
-            webviewPanel.webview.html = getWebviewContent(projects, context, webviewPanel);
+                );
+                const projects = await gerRecentProjects();
+                webviewPanel.iconPath = panelIconPath;
+                webviewPanel.webview.onDidReceiveMessage(
+                    message => {
+                        try {
+                            switch (message.command) {
+                                case COMMAND.INVALID_PROJECT:
+                                    window.showInformationMessage('Path is not valid !');
+                                    break;
+                                case COMMAND.OPEN_PROJECT:
+                                    openProject(message.path);
+                                    break;
+                                case COMMAND.SEARCH_PROJECT:
+                                    const filteredProjects = filterProjects([...projects], message.value);
+                                    const productCards = makeProjectCards(filteredProjects);
+                                    webviewPanel.webview.postMessage({ command: COMMAND.RENDER_CARDS, html: productCards });
+                            }
+                        } catch (err: any) {
+                            window.showInformationMessage(JSON.stringify(err));
+                        }
+                    },
+                    undefined,
+                    context.subscriptions
+                );
+                webviewPanel.webview.html = getWebviewContent(projects, context, webviewPanel);
+            } catch (err: any) {
+                Logger.GetInstance().log(`Exception opening extension at path: ${JSON.stringify(err.message)}`);
+            }
+
         }
     );
     context.subscriptions.push(disposable);

@@ -5,3 +5,6 @@ export * from './logger';
 export * from './types';
 export * from './views';
 
+declare global {
+    function acquireVsCodeApi(): any;
+}

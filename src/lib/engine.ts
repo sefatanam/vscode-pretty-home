@@ -5,7 +5,7 @@ import { RecentProject, RecentWorkspaces, Workspace } from "./types";
 
 export async function gerRecentProjects(): Promise<RecentProject[]> {
   const recentWorkspaces: RecentWorkspaces = await commands.executeCommand("_workbench.getRecentlyOpened");
-  if (!recentWorkspaces) return []
+  if (!recentWorkspaces) {return [];}
 
   const recentFolders = recentWorkspaces.workspaces || [];
   return recentFolders.map(
@@ -62,8 +62,8 @@ export async function showSettingsDialog(context: ExtensionContext) {
 export function isTabInstanceOpen(): boolean {
   const isInstanceOpen = window.tabGroups.all
     .flatMap(group => group.tabs)
-    .find(tab => tab.label.trim().includes('Pretty-Home'))
-  if (!isInstanceOpen) return false;
+    .find(tab => tab.label.trim().includes('Pretty-Home'));
+  if (!isInstanceOpen) {return false;}
   return true;
 }
 

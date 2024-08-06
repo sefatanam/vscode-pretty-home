@@ -14,3 +14,5 @@ vsc-extension-quickstart.md
 **/.vscode-test.*
 **/screenshots/**
 .github
+package-lock.json
+pnpm-lock.yaml

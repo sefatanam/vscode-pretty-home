@@ -15,8 +15,8 @@ export async function activate(context: ExtensionContext) {
 	// Open the webview by default when VS Code starts and no folder/workspace is loaded
 	window.onDidChangeWindowState((e: WindowState) => {
 		try {
-			if (workspace.workspaceFolders) return;
-			if (shouldOpenInstance() && e.focused) return;
+			if (workspace.workspaceFolders) {return;}
+			if (shouldOpenInstance() && e.focused) {return;}
 			commands.executeCommand('extension.prettyHome');
 
 		} catch (err: any) {
@@ -26,17 +26,12 @@ export async function activate(context: ExtensionContext) {
 	});
 
 	(function init() {
-		if (workspace.workspaceFolders) return;
-		if (shouldOpenInstance()) return;
+		if (workspace.workspaceFolders) {return;}
+		if (shouldOpenInstance()) {return;}
 		commands.executeCommand('extension.prettyHome');
-	})()
+	})();
 }
 
 // This method is called when your extension is deactivated
 export function deactivate() {
-}
-
-
-declare global {
-	function acquireVsCodeApi(): any;
 }
