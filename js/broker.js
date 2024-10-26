@@ -1,32 +1,57 @@
- 
+
 const searchInput = document.querySelector("#seachInput");
 const vscode = acquireVsCodeApi();
 
-function triggerOpenProjectCommand(projectOpenButton) {
-  const dataPath = projectOpenButton.currentTarget.dataset.path || null;
-  if (!dataPath) {
-    vscode.postMessage({
-      command: "invalidProject",
-      path: null,
-    });
-    return;
+function actionsProcessor(type, payload) {
+  try { 
+    switch (type) {
+      case 'open': {
+        vscode.postMessage({ command: "openProject", path: payload });
+        break;
+      }
+
+      case 'remove': {
+        vscode.postMessage({ command: "removeProject", path: payload });
+        break;
+      }
+
+      case 'search': {
+        console.log("search value",payload)
+        vscode.postMessage({ command: "searchProject", value: payload });
+        break;
+      }
+
+      case 'error': {
+        vscode.postMessage({ command: "errorInProject", value: payload });
+        break;
+      }
+    }
+  } catch (error) {
+    vscode.postMessage({ command: "errorInProject", value: error });
   }
+}
 
-  vscode.postMessage({
-    command: "openProject",
-    path: dataPath,
+function handleProjectAction(event, action) {
+  console.log(event, action)
+  const button = event.currentTarget;
+  const path = button.dataset.path || null;
+  actionsProcessor(action, path);
+}
+
+function attachEventListeners() {
+  const buttonSelectors = [
+    { selector: ".projectOpenButton", action: "open" },
+    { selector: ".removeProjectButton", action: "remove" },
+  ];
+
+  buttonSelectors.forEach(({ selector, action }) => {
+    document.querySelectorAll(selector).forEach((button) => {
+      button.addEventListener("click", (event) => handleProjectAction(event, action));
+    });
   });
 }
 
-function triggerSearchProjectCommand(searchInput) {
-  const searchValue = searchInput.value;
-  vscode.postMessage({
-    command: "searchProject",
-    value: searchValue,
-  });
-}
-
-function debounce(func, wait) {
+function searchDebounce(func, wait) {
   let timeout;
   return function (...args) {
     const later = () => {
@@ -37,32 +62,19 @@ function debounce(func, wait) {
     timeout = setTimeout(later, wait);
   };
 }
-const debouncedTriggerSearchProjectCommand = debounce(
-  triggerSearchProjectCommand,
-  300
-);
 
-function attachEventListeners() {
-  const projectOpenButtonsSelector = ".projectOpenButton";
-  const projectOpenButtons = document.querySelectorAll(projectOpenButtonsSelector);
-  Array.from(projectOpenButtons).forEach((projectOpenButton) =>
-    projectOpenButton?.addEventListener("click", triggerOpenProjectCommand)
-  );
-}
+// searchInput.addEventListener("input", () => searchDebounce(() => actionsProcessor('search', searchInput?.value), 300));
+searchInput.addEventListener("input", searchDebounce(() => actionsProcessor('search', searchInput?.value), 300));
 
-searchInput.addEventListener("input", () =>
-  debouncedTriggerSearchProjectCommand(searchInput)
-);
+
+window.addEventListener('DOMContentLoaded', () => attachEventListeners());
 
 window.addEventListener("message", (event) => {
   const message = event.data;
   switch (message.command) {
     case "renderCards":
       document.querySelector("#cardsContainer").innerHTML = message.html;
-      attachEventListeners()
+      attachEventListeners();
       break;
   }
 });
-
-
-window.addEventListener('DOMContentLoaded', () => attachEventListeners())

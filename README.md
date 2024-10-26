@@ -30,9 +30,11 @@ After installing the extension, navigate to the command palette in VS Code and s
 - **1.1.4**: Fix State issue to memorize opening tab instance.
 - **1.1.50**: Update open instance logic, added logger in output channel and performance improvment.
 - **1.1.51**: Extension download size optimize (100kb~) from 246kb to 155kb.
+- **1.1.6**: Feature release, now able to remove project from the Pretty Home.
 
 **Contributing:**
 Contributions are welcome. Feel free to submit issues or pull requests on [GitHub](https://github.com/sefatanam/vscode-pretty-home).
+Or Let me know your feedback or feature request. Thanks
 
 **License:**
 This project is licensed under the MIT License.

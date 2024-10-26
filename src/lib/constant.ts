@@ -5,14 +5,16 @@ export const APP = {
 
 export const COMMAND = {
     OPEN_PROJECT: 'openProject',
-    INVALID_PROJECT: 'invalidProject',
+    ERROR_IN_PROJECT: 'errorInProject',
     SEARCH_PROJECT: 'searchProject',
-    RENDER_CARDS: 'renderCards'
+    RENDER_CARDS: 'renderCards',
+    REMOVE_PROJECRT: 'removeProject',
 } as const;
 
 export const WEB_VIEW_ID = {
     PROJECT_OPEN_BUTTON: 'projectOpenButton',
-    SEARCH_INPUIT: 'seachInput'
+    SEARCH_INPUIT: 'seachInput',
+    REMOVE_PROJECT_BUTTON: 'removeProjectButton',
 } as const;
 
 export const REPO_URL = 'https://github.com/sefatanam/vscode-pretty-home';

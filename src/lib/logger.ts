@@ -5,7 +5,7 @@ const outputChannel = window.createOutputChannel('Pretty Home');
 export class Logger {
     static instance: Logger ;
     static {
-        this.instance = new Logger()
+        this.instance = new Logger();
     }
 
     static GetInstance() {
