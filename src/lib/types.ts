@@ -1,3 +1,5 @@
+import { WebviewPanel } from "vscode";
+
 export type RecentProject = { name: string; path: string };
 
 export type Uri = {
@@ -23,3 +25,6 @@ export type RecentWorkspaces = {
     workspaces: Workspace[];
     files: File[];
 };
+
+export type HandleCommand = { message: any; webviewPanel: WebviewPanel };
+export type HandleCommonCommand = HandleCommand & { executableFn: Function };
