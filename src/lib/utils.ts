@@ -39,7 +39,7 @@ export async function handleCommand(command: HandleCommand) {
 // Handle project removal
 async function handleRemoveProject(projectPath: string, webviewPanel: WebviewPanel) {
     await removeFromRecentlyOpened(projectPath);
-    const message = `The project located at "${projectPath}" has been successfully removed from your recent project history. You can still access it from its original location if needed.`;
+    const message = `Project at “${projectPath}” removed from recent history.`;
     window.showInformationMessage(message);
     const projects = await gerRecentProjects();
     return webviewPanel.webview.postMessage({ command: COMMAND.RENDER_CARDS, html: makeProjectCards(projects) });
@@ -65,7 +65,7 @@ async function handleWithMissingPath(command: HandleCommonCommand) {
     const isPathExist = isPathExistInOs(projectPath);
 
     if (!isPathExist) {
-        const errorMessage = `The specified path "${projectPath}" does not exist on your computer.`;
+        const errorMessage = `The path “${projectPath}” does not exist on your computer.`;
         window.showInformationMessage(errorMessage);
 
         await removeFromRecentlyOpened(projectPath);

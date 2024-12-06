@@ -14,9 +14,7 @@ function actionsProcessor(type, payload) {
         vscode.postMessage({ command: "removeProject", path: payload });
         break;
       }
-
-      case 'search': {
-        console.log("search value",payload)
+      case 'search': { 
         vscode.postMessage({ command: "searchProject", value: payload });
         break;
       }
@@ -63,9 +61,7 @@ function searchDebounce(func, wait) {
   };
 }
 
-// searchInput.addEventListener("input", () => searchDebounce(() => actionsProcessor('search', searchInput?.value), 300));
 searchInput.addEventListener("input", searchDebounce(() => actionsProcessor('search', searchInput?.value), 300));
-
 
 window.addEventListener('DOMContentLoaded', () => attachEventListeners());
 
