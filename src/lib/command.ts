@@ -7,6 +7,18 @@ import { getWebviewContent } from "./views";
 import { handleCommand } from "./utils";
 
 
+/**
+ * Registers and shows the Pretty Home command in VS Code.
+ *
+ * This function creates a webview panel displaying recent projects
+ * in a visually appealing format. The panel includes features such as
+ * enabling scripts and retaining context when hidden. If a tab instance
+ * is already open, the command returns early. The webview listens for
+ * messages and handles commands accordingly.
+ *
+ * @param context - The VS Code extension context, used to manage the
+ * extension's lifecycle and resources.
+ */
 export async function showPrettyHomeCommand(context: ExtensionContext) {
     const disposable = commands.registerCommand(
         "extension.prettyHome",
@@ -43,6 +55,16 @@ export async function showPrettyHomeCommand(context: ExtensionContext) {
 }
 
 
+/**
+ * Registers and shows the Pretty Home Settings command in VS Code.
+ *
+ * This function shows a quick pick dialog asking the user if they want to
+ * load Pretty Home by default on startup. If the user selects an option,
+ * it updates the `prettyHome.showOnStartup` configuration setting.
+ *
+ * @param context - The VS Code extension context, used to manage the
+ * extension's lifecycle and resources.
+ */
 export async function showPrettyHomeSettingsCommand(context: ExtensionContext) {
     const defaultSettingDisposable = commands.registerCommand(
         "extension.prettyHomeSettings",
@@ -52,6 +74,16 @@ export async function showPrettyHomeSettingsCommand(context: ExtensionContext) {
     context.subscriptions.push(defaultSettingDisposable);
 }
 
+/**
+ * Registers and shows the "Give star in Github" command in VS Code.
+ *
+ * This function registers a command that opens the VS Code extension's
+ * repository in the user's default browser, where they can star the
+ * extension.
+ *
+ * @param context - The VS Code extension context, used to manage the
+ * extension's lifecycle and resources.
+ */
 export async function openProjectInGithub(context: ExtensionContext) {
     const disposable = commands.registerCommand(
         "extension.prettyHomeGiveStar",

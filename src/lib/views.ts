@@ -2,6 +2,14 @@ import { ExtensionContext, Uri, WebviewPanel } from 'vscode';
 import { WEB_VIEW_ID } from "./constant";
 import { RecentProject } from "./types";
 
+/**
+ * Generates the content of the webview based on the given projects.
+ * 
+ * @param {RecentProject[]} projects The list of projects to be displayed in the webview.
+ * @param {ExtensionContext} context The VS Code extension context.
+ * @param {WebviewPanel} panel The webview panel.
+ * @returns {string} The content of the webview.
+ */
 export const getWebviewContent = (projects: RecentProject[], context: ExtensionContext, panel: WebviewPanel) => {
 	let htmlContent = generateWebView(makeProjectCards(projects));
 
@@ -20,6 +28,18 @@ export const getWebviewContent = (projects: RecentProject[], context: ExtensionC
 };
 
 
+/**
+ * Generates HTML for project cards to be displayed in the webview.
+ * 
+ * Each project is represented as a card with its name and path, along with
+ * buttons to remove the project from the recent list or open the project.
+ * If no projects are available, a message indicating no projects are found
+ * is returned.
+ * 
+ * @param {RecentProject[]} projects - The list of projects to create cards for.
+ * @returns {string} The HTML string containing the project cards or a message
+ * indicating no projects are found.
+ */
 export const makeProjectCards = (projects: RecentProject[]): string => {
 
 	if (projects.length <= 0) {
@@ -52,7 +72,15 @@ export const makeProjectCards = (projects: RecentProject[]): string => {
 	return cardsHTML;
 };
 
-const generateWebView = (cards: string) => {
+/**
+ * Generates the HTML structure for the webview displaying recent projects.
+ * 
+ * @param {string} cards - The HTML string containing project cards to be embedded
+ *                         within the webview.
+ * @returns {string} HTML content of the webview, including the head and body 
+ *                   sections, styles, and scripts.
+ */
+const generateWebView = (listOfCards: string) => {
 	return `<!DOCTYPE html>
 	<html lang="en">
 	<head>
@@ -63,13 +91,11 @@ const generateWebView = (cards: string) => {
 		<link rel="icon" type="image/png" href="favicon.png" />
 	</head>
 	<body>
-		
 		<div class="heading">
 			<h1 class="title">Recent Projects</h1>
 			<input type="text" placeholder="Search Project" id="seachInput" value=""/>
 		</div>
-
-		<div class="grid" id='cardsContainer'> ${cards}</div>
+		<div class="grid" id='cardsContainer'> ${listOfCards}</div>
 		<script type="text/javascript" src="broker.js"></script>
 	</body>
 	</html>
