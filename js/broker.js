@@ -1,9 +1,35 @@
 
 const searchInput = document.querySelector("#seachInput");
 const vscode = acquireVsCodeApi();
+const cardsContainer = document.querySelector("#cardsContainer");
 
+/**
+ * A custom event that is fired when a project needs to be acted upon.
+ *
+ * It is fired on the document, and bubbles up to the window.
+ *
+ * The event's detail object has two properties:
+ * - `action`: The action that needs to be performed on the project. This can be 'open' or 'remove'.
+ * - `path`: The path of the project that needs to be acted upon.
+ */
+const ProjectActionEvent = (action, path) => new CustomEvent("project:action", {
+  bubbles: true,
+  detail: { action, path },
+});
+
+/**
+ * Processes a project action.
+ *
+ * This function takes two arguments:
+ * - `type`: The type of action to perform on the project. This can be 'open', 'remove', 'search', or 'error'.
+ * - `payload`: The payload of the action. This is the path of the project for 'open' and 'remove', a search term for 'search', and an error message for 'error'.
+ *
+ * It sends a message to the VS Code extension with the appropriate command to perform the action.
+ *
+ * If there is an error, it sends a message to the VS Code extension with the command "errorInProject" and the error message as the payload.
+ */
 function actionsProcessor(type, payload) {
-  try { 
+  try {
     switch (type) {
       case 'open': {
         vscode.postMessage({ command: "openProject", path: payload });
@@ -14,7 +40,7 @@ function actionsProcessor(type, payload) {
         vscode.postMessage({ command: "removeProject", path: payload });
         break;
       }
-      case 'search': { 
+      case 'search': {
         vscode.postMessage({ command: "searchProject", value: payload });
         break;
       }
@@ -29,26 +55,18 @@ function actionsProcessor(type, payload) {
   }
 }
 
-function handleProjectAction(event, action) {
-  console.log(event, action)
-  const button = event.currentTarget;
-  const path = button.dataset.path || null;
-  actionsProcessor(action, path);
-}
 
-function attachEventListeners() {
-  const buttonSelectors = [
-    { selector: ".projectOpenButton", action: "open" },
-    { selector: ".removeProjectButton", action: "remove" },
-  ];
-
-  buttonSelectors.forEach(({ selector, action }) => {
-    document.querySelectorAll(selector).forEach((button) => {
-      button.addEventListener("click", (event) => handleProjectAction(event, action));
-    });
-  });
-}
-
+/**
+ * Returns a debounced version of the given function.
+ *
+ * The debounced function will only be called once the given time
+ * has passed since the last time it was called.
+ *
+ * @param {function} func - The function to debounce.
+ * @param {number} wait - The time in milliseconds to wait.
+ *
+ * @returns {function(...*)} A debounced version of the function.
+ */
 function searchDebounce(func, wait) {
   let timeout;
   return function (...args) {
@@ -63,14 +81,21 @@ function searchDebounce(func, wait) {
 
 searchInput.addEventListener("input", searchDebounce(() => actionsProcessor('search', searchInput?.value), 300));
 
-window.addEventListener('DOMContentLoaded', () => attachEventListeners());
+cardsContainer.addEventListener("click", (event) => {
+  if (!event.target.dataset.action) return;
+  event.target.dispatchEvent(ProjectActionEvent(event.target.dataset.action, event.target.dataset.path));
+})
 
 window.addEventListener("message", (event) => {
   const message = event.data;
   switch (message.command) {
     case "renderCards":
-      document.querySelector("#cardsContainer").innerHTML = message.html;
-      attachEventListeners();
+      cardsContainer.innerHTML = message.html;
       break;
   }
 });
+
+window.addEventListener("project:action", (event) => {
+  const { action, path } = event.detail;
+  actionsProcessor(action, path);
+})

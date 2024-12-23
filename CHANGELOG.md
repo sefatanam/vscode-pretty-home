@@ -83,3 +83,8 @@ Pretty Home is a VS Code extension designed to enhance the appearance of your re
 ### Feature
 - Able to remove recent projects 
 > Which will completly remove from vscode recent project history also. You can still access it from its original location if needed. Then it will appear again.
+
+### Version 1.1.61 (2024-12-23)
+
+#### Fix
+- Refactor & Performance optimization

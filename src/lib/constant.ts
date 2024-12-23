@@ -11,10 +11,4 @@ export const COMMAND = {
     REMOVE_PROJECRT: 'removeProject',
 } as const;
 
-export const WEB_VIEW_ID = {
-    PROJECT_OPEN_BUTTON: 'projectOpenButton',
-    SEARCH_INPUIT: 'seachInput',
-    REMOVE_PROJECT_BUTTON: 'removeProjectButton',
-} as const;
-
 export const REPO_URL = 'https://github.com/sefatanam/vscode-pretty-home';
