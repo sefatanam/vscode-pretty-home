@@ -3,6 +3,7 @@ import { COMMAND } from "./constant";
 import { removeFromRecentlyOpened, openProject, filterProjects, isPathExistInOs, gerRecentProjects } from "./engine";
 import { makeProjectCards } from "./views";
 import { HandleCommand, HandleCommonCommand } from "./types";
+import { RecentProject, Workspace } from "./types";
 
 
 // Main command handler
@@ -17,14 +18,14 @@ export async function handleCommand(command: HandleCommand) {
             return await handleWithMissingPath({
                 message,
                 webviewPanel,
-                executableFn: async () => await handleRemoveProject(message.path, webviewPanel)
+                executableFn: async (path: string) => await handleRemoveProject(path, webviewPanel)
             });
         }
         case COMMAND.OPEN_PROJECT: {
             return await handleWithMissingPath({
                 message,
                 webviewPanel,
-                executableFn: async () => await handleOpenProject(message.path, webviewPanel)
+                executableFn: async (path: string) => await handleOpenProject(path, webviewPanel)
             });
         }
         case COMMAND.SEARCH_PROJECT: {
@@ -47,7 +48,10 @@ async function handleRemoveProject(projectPath: string, webviewPanel: WebviewPan
 
 // Handle project opening
 async function handleOpenProject(projectPath: string, webviewPanel: WebviewPanel) {
-    openProject(projectPath);
+    const success = await openProject(projectPath);
+    if (!success) {
+        webviewPanel.webview.postMessage({ command: COMMAND.ERROR_IN_PROJECT, value: `Failed to open project at path: ${projectPath}` });
+    }
 }
 
 // Handle search projects
@@ -65,7 +69,7 @@ async function handleWithMissingPath(command: HandleCommonCommand) {
     const isPathExist = isPathExistInOs(projectPath);
 
     if (!isPathExist) {
-        const errorMessage = `The path “${projectPath}” does not exist on your computer.`;
+        const errorMessage = `The path “${projectPath}” does not exist on your computer. Removing from list.`;
         window.showInformationMessage(errorMessage);
 
         await removeFromRecentlyOpened(projectPath);
@@ -74,5 +78,5 @@ async function handleWithMissingPath(command: HandleCommonCommand) {
         return webviewPanel.webview.postMessage({ command: COMMAND.RENDER_CARDS, html: makeProjectCards(projects) });
     }
 
-    command.executableFn();
+    command.executableFn(projectPath);
 }
