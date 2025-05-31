@@ -58,19 +58,37 @@ export function getWorkspaceName(workspace: Workspace): string {
 }
 
 /**
+ * Checks if the given path exists on the file system.
+ *
+ * @param path - The path to check.
+ * @returns Whether the path exists on the file system.
+ */
+export function isPathExistInOs(path: string) {
+  Logger.GetInstance().log(`Checking path existence for: ${JSON.stringify(path)}`);
+  if (!existsSync(path)) {
+    Logger.GetInstance().log(`Path does not exist: ${JSON.stringify(path)}`);
+    return false;
+  }
+  return true;
+}
+
+/**
  * Opens a folder in VS Code.
  * 
  * @param path - The path to the folder to open.
- * @returns A promise that is resolved when the folder is successfully opened,
- * or rejected with an error if the folder could not be opened.
+ * @returns A promise that resolves to true if the folder was successfully opened,
+ * or false if there was an error.
  */
-export function openProject(path: string) {
-  commands.executeCommand('vscode.openFolder', Uri.file(path)).then(() => {
+export async function openProject(path: string): Promise<boolean> {
+  Logger.GetInstance().log(`Attempting to open project at path: ${JSON.stringify(path)}`);
+  try {
+    await commands.executeCommand('vscode.openFolder', Uri.file(path));
     Logger.GetInstance().log(`Successfully opened project at path: ${JSON.stringify(path)}`);
-  },
-    (err) => {
-      Logger.GetInstance().log(`Failed to open project at path: ${JSON.stringify(path)}, error: ${err.message}`);
-    });
+    return true;
+  } catch (err: any) {
+    Logger.GetInstance().log(`Failed to open project at path: ${JSON.stringify(path)}, error: ${err.message}`);
+    return false;
+  }
 }
 
 /**
@@ -129,20 +147,6 @@ export function shouldStartInStartup(): boolean {
  */
 export function shouldOpenInstance() {
   return isTabInstanceOpen() && shouldStartInStartup();
-}
-
-/**
- * Checks if the given path exists on the file system.
- *
- * @param path - The path to check.
- * @returns Whether the path exists on the file system.
- */
-export function isPathExistInOs(path: string) {
-  if (!existsSync(path)) {
-    Logger.GetInstance().log(`Path does not exist: ${JSON.stringify(path)}`);
-    return false;
-  }
-  return true;
 }
 
 /**

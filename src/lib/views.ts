@@ -45,20 +45,22 @@ export const makeProjectCards = (projects: RecentProject[]): string => {
 		return `<p>No Project found.</p>`;
 	}
 
-	const cardsHTML = projects.map(project => `
+	const cardsHTML = projects.map(project => {
+        const encodedPath = encodeURIComponent(project.path);
+        return `
     <div class="card">
     	<div class="content">
         	<h4 class="name">${project.name}</h4>
         	<p class="path">${project.path}</p>
     	</div>
     	<div class="project-link">
-			<vscode-button class="button" data-action="remove" data-path="${project.path}" data-name="${project.name}" title="Remove Project">
-            	<svg data-action="remove" data-path="${project.path}" data-name="${project.name}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
+			<vscode-button class="button" data-action="remove" data-path="${encodedPath}" data-name="${project.name}" title="Remove Project">
+            	<svg data-action="remove" data-path="${encodedPath}" data-name="${project.name}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
   					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
 				</svg>
         	</vscode-button>
-        	<vscode-button class="button" data-action="open" data-path="${project.path}" data-name="${project.name}" title="Open Project">
-            	<svg data-action="open" data-path="${project.path}" data-name="${project.name}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+        	<vscode-button class="button" data-action="open" data-path="${encodedPath}" data-name="${project.name}" title="Open Project">
+            	<svg data-action="open" data-path="${encodedPath}" data-name="${project.name}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 	stroke="currentColor" class="icon">
                 	<path stroke-linecap="round" stroke-linejoin="round"
                     	d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
@@ -66,7 +68,8 @@ export const makeProjectCards = (projects: RecentProject[]): string => {
         	</vscode-button>
 			
     	</div>
-	</div>`).join('');
+	</div>`;
+    }).join('');
 
 	return cardsHTML;
 };

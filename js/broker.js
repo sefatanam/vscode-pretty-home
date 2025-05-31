@@ -1,4 +1,3 @@
-
 const searchInput = document.querySelector("#seachInput");
 const vscode = acquireVsCodeApi();
 const cardsContainer = document.querySelector("#cardsContainer");
@@ -30,23 +29,26 @@ const ProjectActionEvent = (action, path) => new CustomEvent("project:action", {
  */
 function actionsProcessor(type, payload) {
   try {
+    // Decode the payload before processing if it's a string (likely a path)
+    const processedPayload = typeof payload === 'string' ? decodeURIComponent(payload) : payload;
+
     switch (type) {
       case 'open': {
-        vscode.postMessage({ command: "openProject", path: payload });
+        vscode.postMessage({ command: "openProject", path: processedPayload });
         break;
       }
 
       case 'remove': {
-        vscode.postMessage({ command: "removeProject", path: payload });
+        vscode.postMessage({ command: "removeProject", path: processedPayload });
         break;
       }
       case 'search': {
-        vscode.postMessage({ command: "searchProject", value: payload });
+        vscode.postMessage({ command: "searchProject", value: processedPayload });
         break;
       }
 
       case 'error': {
-        vscode.postMessage({ command: "errorInProject", value: payload });
+        vscode.postMessage({ command: "errorInProject", value: processedPayload });
         break;
       }
     }
