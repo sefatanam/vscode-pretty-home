@@ -16,12 +16,12 @@ function getContext() {
   return extensionContext;
 }
 
-export function getPinnedProjects(): RecentProject[] {
+export async function getPinnedProjects(): Promise<RecentProject[]> {
   return getContext().globalState.get<RecentProject[]>(PINNED_KEY, []);
 }
 
 export async function pinProject(project: RecentProject) {
-  const pinned = getPinnedProjects();
+  const pinned = await getPinnedProjects();
   if (!pinned.find(p => p.path === project.path)) {
     pinned.push(project);
     await getContext().globalState.update(PINNED_KEY, pinned);
@@ -29,10 +29,11 @@ export async function pinProject(project: RecentProject) {
 }
 
 export async function unpinProject(projectPath: string) {
-  const pinned = getPinnedProjects().filter(p => p.path !== projectPath);
+  const pinned = (await getPinnedProjects()).filter(p => p.path !== projectPath);
   await getContext().globalState.update(PINNED_KEY, pinned);
 }
 
-export function isProjectPinned(projectPath: string): boolean {
-  return getPinnedProjects().some(p => p.path === projectPath);
+export async function isProjectPinned(projectPath: string): Promise<boolean> {
+  const pinned = await getPinnedProjects();
+  return pinned.some(p => p.path === projectPath);
 } 

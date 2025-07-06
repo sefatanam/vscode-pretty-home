@@ -47,7 +47,7 @@ export async function showPrettyHomeCommand(context: ExtensionContext) {
                 );
                 webviewPanel.iconPath = panelIconPath;
                 webviewPanel.webview.onDidReceiveMessage(async message => await handleCommand({ message, webviewPanel }), undefined, context.subscriptions);
-                webviewPanel.webview.html = getWebviewContent(await gerRecentProjects(), context, webviewPanel);
+                webviewPanel.webview.html = await getWebviewContent(await gerRecentProjects(), context, webviewPanel);
             } catch (err: any) {
                 Logger.GetInstance().log(`Exception opening extension at path: ${JSON.stringify(err.message)}`);
             }

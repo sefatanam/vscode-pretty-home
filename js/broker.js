@@ -52,6 +52,7 @@ function actionsProcessor(type, payload) {
         break;
       }
       case 'unpin': {
+        console.log('unpin', processedPayload);
         vscode.postMessage({ command: "unpinProject", path: processedPayload });
         break;
       }
@@ -93,9 +94,12 @@ function searchDebounce(func, wait) {
 searchInput.addEventListener("input", searchDebounce(() => actionsProcessor('search', searchInput?.value), 300));
 
 cardsContainer.addEventListener("click", (event) => {
-  if (!event.target.dataset.action) return;
-  event.target.dispatchEvent(ProjectActionEvent(event.target.dataset.action, event.target.dataset.path));
-})
+  const actionEl = event.target.closest('[data-action]');
+  if (!actionEl) {
+    return null;
+  };
+  actionEl.dispatchEvent(ProjectActionEvent(actionEl.dataset.action, actionEl.dataset.path));
+});
 
 window.addEventListener("message", (event) => {
   const message = event.data;

@@ -86,7 +86,7 @@ async function handleUnpinProject(projectPath: string, webviewPanel: WebviewPane
 
 async function renderWithPinned(webviewPanel: WebviewPanel) {
     const projects = await gerRecentProjects();
-    const pinned = getPinnedProjects();
+    const pinned = await getPinnedProjects();
     // Remove pinned from recent
     const recent = projects.filter(p => !pinned.some(pin => pin.path === p.path));
     webviewPanel.webview.postMessage({ command: COMMAND.RENDER_CARDS, html: makeProjectCardsWithPinned(pinned, recent) });

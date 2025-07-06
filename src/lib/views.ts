@@ -10,8 +10,8 @@ import { getPinnedProjects } from "./pinStore";
  * @param {WebviewPanel} panel The webview panel.
  * @returns {string} The content of the webview.
  */
-export const getWebviewContent = (projects: RecentProject[], context: ExtensionContext, panel: WebviewPanel) => {
-	const pinned = getPinnedProjects();
+export const getWebviewContent = async (projects: RecentProject[], context: ExtensionContext, panel: WebviewPanel) => {
+	const pinned = await getPinnedProjects();
 	const recent = projects.filter(p => !pinned.some(pin => pin.path === p.path));
 	let htmlContent = generateWebView(makeProjectCardsWithPinned(pinned, recent));
 
