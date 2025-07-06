@@ -5,6 +5,7 @@ import { gerRecentProjects, isTabInstanceOpen, showSettingsDialog } from "./engi
 import { Logger } from "./logger";
 import { getWebviewContent } from "./views";
 import { handleCommand } from "./utils";
+import { setPinStoreContext } from "./pinStore";
 
 
 /**
@@ -27,6 +28,8 @@ export async function showPrettyHomeCommand(context: ExtensionContext) {
                 if (isTabInstanceOpen()) {
                     return;
                 };
+
+                setPinStoreContext(context);
 
                 const panelIconPath = {
                     light: Uri.file(join(context.extensionPath, 'assets', 'icon.png')),

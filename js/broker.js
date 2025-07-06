@@ -47,6 +47,15 @@ function actionsProcessor(type, payload) {
         break;
       }
 
+      case 'pin': {
+        vscode.postMessage({ command: "pinProject", path: processedPayload });
+        break;
+      }
+      case 'unpin': {
+        vscode.postMessage({ command: "unpinProject", path: processedPayload });
+        break;
+      }
+
       case 'error': {
         vscode.postMessage({ command: "errorInProject", value: processedPayload });
         break;

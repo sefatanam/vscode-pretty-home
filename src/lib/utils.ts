@@ -1,9 +1,10 @@
 import { WebviewPanel, window } from "vscode";
 import { COMMAND } from "./constant";
 import { removeFromRecentlyOpened, openProject, filterProjects, isPathExistInOs, gerRecentProjects } from "./engine";
-import { makeProjectCards } from "./views";
+import { makeProjectCards, makeProjectCardsWithPinned } from "./views";
 import { HandleCommand, HandleCommonCommand } from "./types";
 import { RecentProject, Workspace } from "./types";
+import { getPinnedProjects, pinProject, unpinProject } from "./pinStore";
 
 
 // Main command handler
@@ -30,6 +31,14 @@ export async function handleCommand(command: HandleCommand) {
         }
         case COMMAND.SEARCH_PROJECT: {
             return await handleSearchProject(message.value, webviewPanel);
+        }
+        case COMMAND.PIN_PROJECT: {
+            await handlePinProject(message.path, webviewPanel);
+            break;
+        }
+        case COMMAND.UNPIN_PROJECT: {
+            await handleUnpinProject(message.path, webviewPanel);
+            break;
         }
         default: {
             return window.showInformationMessage("No Command Found");
@@ -61,6 +70,27 @@ async function handleSearchProject(searchValue: string, webviewPanel: WebviewPan
     webviewPanel.webview.postMessage({ command: COMMAND.RENDER_CARDS, html: makeProjectCards(filteredProjects) });
 }
 
+async function handlePinProject(projectPath: string, webviewPanel: WebviewPanel) {
+    const projects = await gerRecentProjects();
+    const project = projects.find(p => p.path === projectPath);
+    if (project) {
+        await pinProject(project);
+    }
+    await renderWithPinned(webviewPanel);
+}
+
+async function handleUnpinProject(projectPath: string, webviewPanel: WebviewPanel) {
+    await unpinProject(projectPath);
+    await renderWithPinned(webviewPanel);
+}
+
+async function renderWithPinned(webviewPanel: WebviewPanel) {
+    const projects = await gerRecentProjects();
+    const pinned = getPinnedProjects();
+    // Remove pinned from recent
+    const recent = projects.filter(p => !pinned.some(pin => pin.path === p.path));
+    webviewPanel.webview.postMessage({ command: COMMAND.RENDER_CARDS, html: makeProjectCardsWithPinned(pinned, recent) });
+}
 
 async function handleWithMissingPath(command: HandleCommonCommand) {
     const { message, webviewPanel } = command;
