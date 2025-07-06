@@ -76,7 +76,7 @@ async function handleSearchProject(searchValue: string, webviewPanel: WebviewPan
 
 async function handlePinProject(projectPath: string, webviewPanel: WebviewPanel) {
     const projects = await gerRecentProjects();
-    const project = projects.find(p => p.path === projectPath);
+    const project = projects.find(p => p.path === decodeURIComponent(projectPath));
     if (project) {
         await pinProject(project);
     }
