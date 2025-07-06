@@ -49,10 +49,10 @@ export async function handleCommand(command: HandleCommand) {
 // Handle project removal
 async function handleRemoveProject(projectPath: string, webviewPanel: WebviewPanel) {
     await removeFromRecentlyOpened(projectPath);
+    await unpinProject(projectPath);
     const message = `Project at “${projectPath}” removed from recent history.`;
     window.showInformationMessage(message);
-    const projects = await gerRecentProjects();
-    return webviewPanel.webview.postMessage({ command: COMMAND.RENDER_CARDS, html: makeProjectCards(projects) });
+    await renderWithPinned(webviewPanel);
 }
 
 // Handle project opening
