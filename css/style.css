@@ -63,6 +63,9 @@ body > * {
   font-size: calc(var(--vscode-editor-font-size) * 2);
 }
 .projects-container {
+  padding: var(--container-paddding);
+}
+.projects-grid {
   display: grid;
   gap: 20px;
 }
