@@ -63,16 +63,17 @@ body > * {
   font-size: calc(var(--vscode-editor-font-size) * 2);
 }
 .projects-container {
-  padding: var(--container-paddding);
+  display: grid;
+  gap: var(--container-paddding);
 }
 .projects-grid {
   display: grid;
-  gap: 20px;
+  gap: var(--container-paddding);
 }
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
+  gap: var(--container-paddding)
 }
 .card {
   border-radius: 0.5rem;
