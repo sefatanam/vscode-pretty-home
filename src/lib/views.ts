@@ -112,7 +112,12 @@ export const makeProjectCardsWithPinned = (pinned: RecentProject[], recent: Rece
     if (pinned.length > 0) {
         html += `<h2>Pinned Projects</h2><div class="grid">${pinned.map(p => projectCard(p, true)).join('')}</div>`;
     }
-    html += `<h2>Recent Projects</h2><div class="grid">${recent.map(p => projectCard(p, false)).join('')}</div>`;
+    if (recent.length > 0) {
+        html += `<h2>Recent Projects</h2><div class="grid">${recent.map(p => projectCard(p, false)).join('')}</div>`;
+    }
+    if (pinned.length === 0 && recent.length === 0) {
+        html = '<p>No Project found.</p>';
+    }
     return html;
 };
 
