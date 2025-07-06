@@ -52,7 +52,7 @@ function actionsProcessor(type, payload) {
         break;
       }
       case 'unpin': {
-        console.log('unpin', processedPayload);
+        vscode.postMessage({ command: "logAction", action: "unpin", payload: processedPayload });
         vscode.postMessage({ command: "unpinProject", path: processedPayload });
         break;
       }

@@ -84,7 +84,8 @@ async function handlePinProject(projectPath: string, webviewPanel: WebviewPanel)
 }
 
 async function handleUnpinProject(projectPath: string, webviewPanel: WebviewPanel) {
-    await unpinProject(projectPath);
+    const decodedProjectPath = decodeURIComponent(projectPath);
+    await unpinProject(decodedProjectPath);
     await renderWithPinned(webviewPanel);
 }
 
