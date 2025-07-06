@@ -65,6 +65,10 @@ async function handleOpenProject(projectPath: string, webviewPanel: WebviewPanel
 
 // Handle search projects
 async function handleSearchProject(searchValue: string, webviewPanel: WebviewPanel) {
+    if (!searchValue || searchValue.trim() === "") {
+        await renderWithPinned(webviewPanel);
+        return;
+    }
     const projects = await gerRecentProjects();
     const filteredProjects = filterProjects([...projects], searchValue);
     webviewPanel.webview.postMessage({ command: COMMAND.RENDER_CARDS, html: makeProjectCards(filteredProjects) });
