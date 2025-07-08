@@ -1,5 +1,6 @@
 import { ExtensionContext, Uri, WebviewPanel } from 'vscode';
 import { RecentProject } from "./types";
+import { getPinnedProjects } from "./pinStore";
 
 /**
  * Generates the content of the webview based on the given projects.
@@ -9,8 +10,10 @@ import { RecentProject } from "./types";
  * @param {WebviewPanel} panel The webview panel.
  * @returns {string} The content of the webview.
  */
-export const getWebviewContent = (projects: RecentProject[], context: ExtensionContext, panel: WebviewPanel) => {
-	let htmlContent = generateWebView(makeProjectCards(projects));
+export const getWebviewContent = async (projects: RecentProject[], context: ExtensionContext, panel: WebviewPanel) => {
+	const pinned = await getPinnedProjects();
+	const recent = projects.filter(p => !pinned.some(pin => pin.path === p.path));
+	let htmlContent = generateWebView(makeProjectCardsWithPinned(pinned, recent));
 
 	const iconFilePath = Uri.joinPath(context.extensionUri, 'assets', 'icon.png');
 	const iconUri = panel.webview.asWebviewUri(iconFilePath);
@@ -88,18 +91,68 @@ const generateWebView = (listOfCards: string) => {
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Recent Projects</title>
+		<title>Projects</title>
 		<link rel="stylesheet" href="style.css">
 		<link rel="icon" type="image/png" href="favicon.png" />
 	</head>
 	<body>
 		<div class="heading">
-			<h1 class="title">Recent Projects</h1>
+			<h1 class="title">Projects</h1>
 			<input type="text" placeholder="Search Project" id="seachInput" value=""/>
 		</div>
-		<div class="grid" id='cardsContainer'> ${listOfCards}</div>
+		<div class="projects-container" id='cardsContainer'> ${listOfCards}</div>
 		<script type="text/javascript" src="broker.js"></script>
 	</body>
 	</html>
 `;
 };
+
+export const makeProjectCardsWithPinned = (pinned: RecentProject[], recent: RecentProject[]): string => {
+    let html = '';
+    if (pinned.length > 0) {
+        html += `<h2>Pinned Projects</h2><div class="grid">${pinned.map(p => projectCard(p, true)).join('')}</div>`;
+    }
+    if (recent.length > 0) {
+        html += `<h2>Recent Projects</h2><div class="grid">${recent.map(p => projectCard(p, false)).join('')}</div>`;
+    }
+    if (pinned.length === 0 && recent.length === 0) {
+        html = '<p>No Project found.</p>';
+    }
+    return html;
+};
+
+function projectCard(project: RecentProject, isPinned: boolean): string {
+    const encodedPath = encodeURIComponent(project.path);
+    // Heroicons pin: outline and solid
+    const pinIcon = isPinned
+        ? 	`<svg data-action="unpin" data-path="${encodedPath}" xmlns="http://www.w3.org/2000/svg"  class="icon" title="Unpin" viewBox="0 0 24 24" >
+				<path fill="currentColor" d="M16.729 4.271a1 1 0 0 0-1.414-.004a1 1 0 0 0-.225.355c-.832 1.736-1.748 2.715-2.904 3.293C10.889 8.555 9.4 9 7 9a1.01 1.01 0 0 0-.923.617a1 1 0 0 0 .217 1.09l3.243 3.243L5 20l6.05-4.537l3.242 3.242a1 1 0 0 0 .326.217q.185.077.382.078c.197.001.26-.027.382-.078A1 1 0 0 0 16 18c0-2.4.444-3.889 1.083-5.166c.577-1.156 1.556-2.072 3.293-2.904a1 1 0 0 0 .354-.225a1 1 0 0 0-.004-1.414z"/>
+			</svg>`				
+        : 	`<svg data-action="pin" data-path="${encodedPath}" xmlns="http://www.w3.org/2000/svg" class="icon" title="Pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" >
+				<path d="M16.729 4.271a1 1 0 0 0-1.414-.004a1 1 0 0 0-.225.355c-.832 1.736-1.748 2.715-2.904 3.293C10.889 8.555 9.4 9 7 9a1.01 1.01 0 0 0-.923.617a1 1 0 0 0 .217 1.09l3.243 3.243L5 20l6.05-4.537l3.242 3.242a1 1 0 0 0 .326.217q.185.077.382.078c.197.001.26-.027.382-.078A1 1 0 0 0 16 18c0-2.4.444-3.889 1.083-5.166c.577-1.156 1.556-2.072 3.293-2.904a1 1 0 0 0 .354-.225a1 1 0 0 0-.004-1.414z"/>
+			</svg>`;
+   
+    return `
+    <div class="card">
+        <div class="content">
+            <h4 class="name">${project.name}</h4>
+            <p class="path">${project.path}</p>
+        </div>
+        <div class="project-link">
+            <vscode-button class="button" data-action="remove" data-path="${encodedPath}" data-name="${project.name}" title="Remove Project">
+                <svg data-action="remove" data-path="${encodedPath}" data-name="${project.name}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </vscode-button>
+            <vscode-button class="button" data-action="open" data-path="${encodedPath}" data-name="${project.name}" title="Open Project">
+                <svg data-action="open" data-path="${encodedPath}" data-name="${project.name}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="icon">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+            </vscode-button>
+            <vscode-button class="button pin-btn" data-action="${isPinned ? 'unpin' : 'pin'}" data-path="${encodedPath}" title="${isPinned ? 'Unpin' : 'Pin'} Project">
+                ${pinIcon}
+            </vscode-button>
+        </div>
+    </div>`;
+}

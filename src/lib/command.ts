@@ -5,6 +5,7 @@ import { gerRecentProjects, isTabInstanceOpen, showSettingsDialog } from "./engi
 import { Logger } from "./logger";
 import { getWebviewContent } from "./views";
 import { handleCommand } from "./utils";
+import { setPinStoreContext } from "./pinStore";
 
 
 /**
@@ -28,6 +29,8 @@ export async function showPrettyHomeCommand(context: ExtensionContext) {
                     return;
                 };
 
+                setPinStoreContext(context);
+
                 const panelIconPath = {
                     light: Uri.file(join(context.extensionPath, 'assets', 'icon.png')),
                     dark: Uri.file(join(context.extensionPath, 'assets', 'icon.png'))
@@ -44,7 +47,7 @@ export async function showPrettyHomeCommand(context: ExtensionContext) {
                 );
                 webviewPanel.iconPath = panelIconPath;
                 webviewPanel.webview.onDidReceiveMessage(async message => await handleCommand({ message, webviewPanel }), undefined, context.subscriptions);
-                webviewPanel.webview.html = getWebviewContent(await gerRecentProjects(), context, webviewPanel);
+                webviewPanel.webview.html = await getWebviewContent(await gerRecentProjects(), context, webviewPanel);
             } catch (err: any) {
                 Logger.GetInstance().log(`Exception opening extension at path: ${JSON.stringify(err.message)}`);
             }

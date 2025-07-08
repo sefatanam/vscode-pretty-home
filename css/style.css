@@ -62,16 +62,24 @@ body > * {
 .title {
   font-size: calc(var(--vscode-editor-font-size) * 2);
 }
+.projects-container {
+  display: grid;
+  gap: var(--container-paddding);
+}
+.projects-grid {
+  display: grid;
+  gap:var(--container-paddding);
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
+  gap: var(--container-paddding);
 }
 .card {
   border-radius: 0.5rem;
   border: 1px solid var(--vscode-input-foreground);
   background-color: var(--vscode-input-background);
-  padding: 10px;
+  padding: calc(var(--container-paddding) / 2);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
