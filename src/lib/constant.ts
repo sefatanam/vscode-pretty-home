@@ -1,6 +1,6 @@
 export const APP = {
     WEB_VIEW_TYPE: 'pretty-home',
-    TITLE: 'Recent Projects | Pretty-Home',
+    TITLE: 'Pretty Home',
 } as const;
 
 export const COMMAND = {

@@ -125,8 +125,13 @@ function projectCard(project: RecentProject, isPinned: boolean): string {
     const encodedPath = encodeURIComponent(project.path);
     // Heroicons pin: outline and solid
     const pinIcon = isPinned
-        ? `<svg data-action="unpin" data-path="${encodedPath}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="icon" title="Unpin"><path d="M2 6.342a3.375 3.375 0 0 1 6-2.088 3.375 3.375 0 0 1 5.997 2.26c-.063 2.134-1.618 3.76-2.955 4.784a14.437 14.437 0 0 1-2.676 1.61c-.02.01-.038.017-.05.022l-.014.006-.004.002h-.002a.75.75 0 0 1-.592.001h-.002l-.004-.003-.015-.006a5.528 5.528 0 0 1-.232-.107 14.395 14.395 0 0 1-2.535-1.557C3.564 10.22 1.999 8.558 1.999 6.38L2 6.342Z" /></svg>`
-        : `<svg data-action="pin" data-path="${encodedPath}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" class="icon" title="Pin"><path d="M2 6.342a3.375 3.375 0 0 1 6-2.088 3.375 3.375 0 0 1 5.997 2.26c-.063 2.134-1.618 3.76-2.955 4.784a14.437 14.437 0 0 1-2.676 1.61c-.02.01-.038.017-.05.022l-.014.006-.004.002h-.002a.75.75 0 0 1-.592.001h-.002l-.004-.003-.015-.006a5.528 5.528 0 0 1-.232-.107 14.395 14.395 0 0 1-2.535-1.557C3.564 10.22 1.999 8.558 1.999 6.38L2 6.342Z" /></svg>`;
+        ? 	`<svg data-action="unpin" data-path="${encodedPath}" xmlns="http://www.w3.org/2000/svg"  class="icon" title="Unpin" viewBox="0 0 24 24" >
+				<path fill="currentColor" d="M16.729 4.271a1 1 0 0 0-1.414-.004a1 1 0 0 0-.225.355c-.832 1.736-1.748 2.715-2.904 3.293C10.889 8.555 9.4 9 7 9a1.01 1.01 0 0 0-.923.617a1 1 0 0 0 .217 1.09l3.243 3.243L5 20l6.05-4.537l3.242 3.242a1 1 0 0 0 .326.217q.185.077.382.078c.197.001.26-.027.382-.078A1 1 0 0 0 16 18c0-2.4.444-3.889 1.083-5.166c.577-1.156 1.556-2.072 3.293-2.904a1 1 0 0 0 .354-.225a1 1 0 0 0-.004-1.414z"/>
+			</svg>`				
+        : 	`<svg data-action="pin" data-path="${encodedPath}" xmlns="http://www.w3.org/2000/svg" class="icon" title="Pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" >
+				<path d="M16.729 4.271a1 1 0 0 0-1.414-.004a1 1 0 0 0-.225.355c-.832 1.736-1.748 2.715-2.904 3.293C10.889 8.555 9.4 9 7 9a1.01 1.01 0 0 0-.923.617a1 1 0 0 0 .217 1.09l3.243 3.243L5 20l6.05-4.537l3.242 3.242a1 1 0 0 0 .326.217q.185.077.382.078c.197.001.26-.027.382-.078A1 1 0 0 0 16 18c0-2.4.444-3.889 1.083-5.166c.577-1.156 1.556-2.072 3.293-2.904a1 1 0 0 0 .354-.225a1 1 0 0 0-.004-1.414z"/>
+			</svg>`;
+   
     return `
     <div class="card">
         <div class="content">
@@ -144,7 +149,6 @@ function projectCard(project: RecentProject, isPinned: boolean): string {
                     stroke="currentColor" class="icon">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                </svg>
             </vscode-button>
             <vscode-button class="button pin-btn" data-action="${isPinned ? 'unpin' : 'pin'}" data-path="${encodedPath}" title="${isPinned ? 'Unpin' : 'Pin'} Project">
                 ${pinIcon}

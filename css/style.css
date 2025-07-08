@@ -64,7 +64,7 @@ body > * {
 }
 .projects-container {
   display: grid;
-  padding: var(--container-paddding);
+  gap: var(--container-paddding);
 }
 .projects-grid {
   display: grid;
