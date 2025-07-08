@@ -2,6 +2,7 @@ import { commands, ConfigurationTarget, ExtensionContext, Uri, window, workspace
 import { Logger } from "./logger";
 import { RecentProject, RecentWorkspaces, Workspace } from "./types";
 import { existsSync } from 'fs';
+import { APP } from "./constant";
 
 /**
  * Retrieves a list of recent projects.
@@ -122,7 +123,7 @@ export async function showSettingsDialog(context: ExtensionContext) {
 export function isTabInstanceOpen(): boolean {
   const isInstanceOpen = window.tabGroups.all
     .flatMap(group => group.tabs)
-    .find(tab => tab.label.trim().includes('Pretty-Home'));
+    .find(tab => tab.label.trim().includes(APP.TITLE));
   if (!isInstanceOpen) { return false; }
   return true;
 }
