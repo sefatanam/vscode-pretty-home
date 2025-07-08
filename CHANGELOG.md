@@ -88,3 +88,11 @@ Pretty Home is a VS Code extension designed to enhance the appearance of your re
 
 #### Fix
 - Refactor & Performance optimization
+
+## [1.2.0] - 2025-07-08
+### Feature
+- Users can now pin projects for quick access.
+### Fixed
+- Fixed a bug where unpinning a project showed a misleading 'No Command Found' notification.
+- Improved release workflow: avoids npm version errors when version is unchanged.
+- Added guidance for troubleshooting publish authentication (401 errors) in GitHub Actions.
